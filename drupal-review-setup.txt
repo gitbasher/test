@@ -1,0 +1,268 @@
+under sites/default/contrib we have
+
+- architecure
+- coder
+- devel
+- grammer-_parser_lib
+- libraries
+- query_coder
+- schema
+- xray 
+
+================================================================
+1. architecure
+Description:
+------------
+The Architecture module provides reports documenting how your 
+Drupal site is architected.
+
+Currently it provides three reports:
+
+    "Site Entities" lists all content types, taxonomies, and other 
+Drupal entities that have been defined for your website. Entities 
+that are fieldable also include a list of all fields for that 
+entity.
+    "Site Taxonomies" lists all taxonomies and their associated 
+terms.
+    "Site Variables" lists all variables and their values.
+
+
+The purpose of this module is to provide some easy-to-read 
+documentation of how your site is put together. The reports are 
+designed so they can be viewed online but also easily copied-and-
+pasted into word processing documents for sharing information with 
+people who don't need to see a lot of technical detail or 
+specialized Drupal terminology.
+
+links:
+------
+1. admin/reports/architecture/entities : Displays entities that are 
+defined for this Drupal website.
+status: Working
+
+2. admin/reports/architecture/taxonomies : Displays taxonomies that 
+are defined for this Drupal website.
+status: Working
+
+3. admin/reports/architecture/variables : Displays variables that 
+are defined for this Drupal website.
+status: Working
+
+4. admin/reports/architecture/features : Displays site architecture 
+managed by the Features module.
+status: features module not enabled
+
+================================================================
+2. schema
+Description:
+------------
+The Schema module provides additional Schema-related functionality 
+not provided by the core Schema API that is useful for module 
+developers. Currently, this includes:
+
+    Schema documentation: hyperlinked display of the schema's 
+embedded documentation explaining what each table and field is for.
+    Schema structure generation: the module examines the live 
+database and creates Schema API data structures for all tables that 
+match the live database.
+    Schema comparison: the module compares the live database 
+structure with the schema structure declared by all enabled 
+modules, reporting on any missing or incorrect tables.
+
+
+links:
+------
+1. admin/structure/schema : This page compares the live database as 
+it currently exists against the combination of all schema 
+information provided by all enabled modules
+status: Working
+
+2. admin/structure/schema/describe : This page describes the Drupal 
+database schema. Click on a table name to see that table's 
+description and fields. Table names within a table or field 
+description are hyperlinks to that table's description.
+status: Working
+
+3. admin/structure/schema/inspect : This page shows the live 
+database schema as it currently exists on this system. Known tables 
+are grouped by the module that defines them; unknown tables are all 
+grouped together.
+To implement hook_schema() for a module that has existing tables, 
+copy the schema structure for those tables directly into the 
+module's hook_schema() and return $schema.
+status: Working
+
+4. /admin/structure/schema/sql : This page shows the CREATE TABLE 
+statements that the Schema API generates for the selected database 
+engine for each table defined by a module. It is for debugging 
+purposes.
+status: Working
+
+5. admin/structure/schema/show : This page displays the Drupal 
+database schema data structure. It is for debugging purposes.
+status: Working
+
+6. admin/structure/schema/settings : schema modules settings
+status: Working
+
+==============================================================
+3. xray
+-------
+X-ray module gives a look at the skeletal structure of a site to 
+help developers and site builders see how things work.
+Provide visual aids and information to help site builders 
+understand their own sites or ones they've taken over (perhaps as 
+integration with the Site Documentation module).
+Provide visual aids and information useful for module developers
+
+features in xray;
+-A technical summary is added to the help above the main 
+administrative sections. For example, blocks, content types, and 
+menus are summarized on Structure; themes on Appearance; etc.
+-A table of permission titles matched to their permission machine 
+names.
+-A table of most* hooks which Drupal invokes (and when they are 
+invoked) and that are available to be implemented.
+-The function and arguments producing each page you visit, 
+displayed on that page.
+-The form ID of every form you see, displayed on the form.
+
+1. admin/reports/xray : Technical overview of the site's internals. 
+These summaries also appear / can be configured to appear on main 
+administration section.
+
+2. admin/reports/xray/overview : Technical overview of the site's 
+internals. These summaries also appear / can be configured to 
+appear on main administration section.
+
+3. admin/reports/xray/permissions 
+
+4. admin/reports/xray/hooks :  This table shows Drupal hooks 
+present in your site's code and their implementing modules. Note: 
+Only hook invocations involving module_implements(), which is used 
+by module_invoke_all() but not by module_invoke() for example, are 
+captured here. A list of all properly documented hooks in Drupal 
+core (marked by @addtogroup hooks in code or api.php files) is 
+online at Drupal API Hooks page.
+	
+5. admin/reports/xray/conf
+
+
+=================================================================
+4. QUery Coder: Convert SQL query to Drupal Database abstraction 
+layer code.
+Known issues:
+-------------
+    INSERT queries must be specified in form "INSERT INTO 
+table_name (column1, column2, column3,...) VALUES (value1, value2, 
+value3,...)"
+    Not support "->expression()" conditions for UPDATE queries.
+    All tables and fields in SELECT query must be specified with 
+aliases, in other (UPDATE, INSERT, DELETE) queries without aliases
+    Example:
+    RIGHT: "SELECT * FROM users u"
+    NOT RIGHT: "SELECT * FROM users"
+    All combining conditions in SELECT queries must be specified 
+with aliases.
+    Example:
+    RIGHT: "SELECT COUNT(*) AS user_count FROM users u"
+    NOT RIGHT: "SELECT COUNT(*) FROM users u".
+
+
+
+links:
+------
+1. admin/config/development/query_coder : add your mysql query in 
+sql query textarea and hit submit to get drupalized query
+
+=================================================================
+
+5. Coder: This module utilizes rules (mostly regular expressions) 
+to review source code files for code that 1) needs to change due to 
+Drupal API changes and 2) does not satisfy Drupal coding standards.
+
+Coder Review provides support for:
+
+    Drupal Coding Standards and a first attempt on the Drupal 
+Commenting Standards
+    Converting 5.x modules to 6.x (best), 4.7.x modules to 5.x 
+(better), 4.6.x modules to 4.7.x (basic)
+    Handle text in a secure fashion (very basic, need works, but 
+what it finds is good), Performance Review
+
+The following modules extend the reviews available in the Coder 
+Review modul
+
+This module utilizes the Grammar Parser library to modify a source 
+code file based on its grammar. The module utilizes the growing API 
+for code manipulation (e.g., getting, setting, inserting and 
+deleting parameters to a function call) provided by the Grammar 
+Parser library to modify source code in a precise and programmatic 
+fashion. The module utilizes the familiar Drupal hook system to 
+invoke upgrade routines (e.g., for function calls and hook 
+functions), allowing other modules to enhance or modify a routine. 
+Contributed modules that define an API can develop upgrade routines 
+that would enable other contributed modules relying on that API to 
+upgrade their code.
+
+
+links.
+1. admin/config/development/coder/review
+
+2. admin/config/development/coder/review/settings
+
+3. admin/config/development/coder
+
+=================================================
+6. hacked
+
+This module scans the currently installed Drupal, contributed 
+modules and themes, re-downloads them and determines if they have 
+been changed. Changes are marked clearly and if the diff module is 
+installed then Hacked! will allow you to see the exact lines that 
+have changed.
+
+1. admin/reports/hacked
+2. admin/reports/hacked/settings
+3. admin/reports/hacked/list :builds reports
+status: working
+4. admin/reports/hacked/rebuild-report
+
+=================================================
+7. Devel
+description: A suite of modules containing fun for module 
+developers and themers ...
+Devel
+
+    Helper functions for Drupal developers and inquisitive admins. 
+This module can print a summary of all database queries for each 
+page request at the bottom of each page. The summary includes how 
+many times each query was executed on a page (shouldn't run same 
+query multiple times), and how long each query took (short is good 
+- use cache for complex queries).
+    Also a dprint_r($array) function is provided, which pretty 
+prints arrays. Useful during development. Similarly, a 
+ddebug_backtrace() is offerred.
+    much more. See this helpful demo page.
+
+Generate content
+
+Accelerate development of your site or module by quickly generating 
+nodes, comments, terms, users, and more.
+Devel Node Access (DNA)
+
+View the node access entries for the node(s) that are shown on a 
+page. Essential for developers of node access modules and useful 
+for site admins in debugging problems with those modules.
+
+
+
+
+
+
+
+
+
+
+
+
